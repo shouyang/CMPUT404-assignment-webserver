@@ -38,6 +38,7 @@ class MyWebServer(socketserver.BaseRequestHandler):
         Decodes requests crudely and handles GET requests, otherwise issues a 405 error.
         '''
         self.data = self.request.recv(1024).strip()
+        print(self.data)
 
         request_as_list = self.data.split()
         request_as_list = [ item.decode("utf-8") for item in request_as_list]
@@ -75,6 +76,8 @@ class MyWebServer(socketserver.BaseRequestHandler):
 
         content = open(final_path).read()
 
+        print(self.generateHttpHeader(200) + self.generateHttpContentType(final_path) + content)
+
         self.sendStr(self.generateHttpHeader(200) + self.generateHttpContentType(final_path) + content)
 
 
@@ -89,7 +92,7 @@ class MyWebServer(socketserver.BaseRequestHandler):
         return "HTTP/1.1 {code} \r\n".format(code = code)
 
     def generateHttpContentType(self, path):
-        return  "Content-type: {content_type}; \r\n".format(content_type=mimetypes.guess_type(path)[0])
+        return  "Content-type: {content_type}; \r\n\r\n".format(content_type=mimetypes.guess_type(path)[0])
         
 
 if __name__ == "__main__":

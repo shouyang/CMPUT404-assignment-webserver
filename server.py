@@ -51,8 +51,7 @@ class MyWebServer(socketserver.BaseRequestHandler):
         if request_type == "GET":
             self.GET(request_path)
         else:
-            self.request.sendError(405)
-
+            self.sendError(405)
 
     def GET(self, request_path):
         ''' Handles GET requests using the request path.

@@ -42,6 +42,9 @@ class MyWebServer(socketserver.BaseRequestHandler):
         request_as_list = self.data.split()
         request_as_list = [ item.decode("utf-8") for item in request_as_list]
 
+        if not request_as_list:
+            return
+
         request_type = request_as_list[0]
         request_path = request_as_list[1]
 

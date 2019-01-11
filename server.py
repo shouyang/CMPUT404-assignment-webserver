@@ -38,7 +38,6 @@ class MyWebServer(socketserver.BaseRequestHandler):
         Decodes requests crudely and handles GET requests, otherwise issues a 405 error.
         '''
         self.data = self.request.recv(1024).strip()
-        print(self.data)
 
         request_as_list = self.data.split()
         request_as_list = [ item.decode("utf-8") for item in request_as_list]
@@ -60,8 +59,6 @@ class MyWebServer(socketserver.BaseRequestHandler):
         '''
         
         final_path = self.BASEPATH + request_path
-        print(final_path)
-
 
         if not os.path.exists(final_path):
             self.sendError(404)
@@ -75,8 +72,6 @@ class MyWebServer(socketserver.BaseRequestHandler):
             final_path += "index.html"
 
         content = open(final_path).read()
-
-        print(self.generateHttpHeader(200) + self.generateHttpContentType(final_path) + content)
 
         self.sendStr(self.generateHttpHeader(200) + self.generateHttpContentType(final_path) + content)
 

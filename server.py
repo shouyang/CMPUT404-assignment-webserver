@@ -71,7 +71,7 @@ class MyWebServer(socketserver.BaseRequestHandler):
             return
 
         if os.path.isdir(final_path):
-            final_path += "index.html"
+            final_path += "/index.html"
 
         content = open(final_path).read()
 

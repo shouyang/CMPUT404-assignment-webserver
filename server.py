@@ -71,10 +71,13 @@ class MyWebServer(socketserver.BaseRequestHandler):
             return
 
         if os.path.isdir(final_path):
-            final_path += "/index.html"
+            if final_path[-1] == "/":
+                final_path += "/index.html"
+            else:
+                self.sendStr(self.generateHttpHeader(301) + "Location: {}\r\n\r\n".format(request_path + "/") )
+                return
 
         content = open(final_path).read()
-
         self.sendStr(self.generateHttpHeader(200) + self.generateHttpContentType(final_path) + content)
 
 
@@ -90,7 +93,7 @@ class MyWebServer(socketserver.BaseRequestHandler):
 
     def generateHttpContentType(self, path):
         return  "Content-type: {content_type}; \r\n\r\n".format(content_type=mimetypes.guess_type(path)[0])
-        
+    
 
 if __name__ == "__main__":
     HOST, PORT = "localhost", 8080

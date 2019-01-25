@@ -72,7 +72,13 @@ class MyWebServer(socketserver.BaseRequestHandler):
 
         if os.path.isdir(final_path):
             if final_path[-1] == "/":
-                final_path += "/index.html"
+
+                if os.path.exists(final_path + "/index.html"):
+                    final_path += "/index.html"
+                else:
+                    self.sendError(404)
+                    return
+                    
             else:
                 self.sendStr(self.generateHttpHeader(301) + "Location: {}\r\n\r\n".format(request_path + "/") )
                 return
